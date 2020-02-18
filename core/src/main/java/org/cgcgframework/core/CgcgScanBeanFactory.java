@@ -1,0 +1,37 @@
+package org.cgcgframework.core;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Setter
+@Getter
+public class CgcgScanBeanFactory {
+
+    private String pkg;
+
+    private Class<?> clazz;
+
+    private Object bean;
+
+    public CgcgScanBeanFactory( Class<?> clazz) {
+        this.pkg = clazz.getPackage().getName();
+        this.clazz = clazz;
+        this.initBean();
+    }
+
+    public CgcgScanBeanFactory() {
+    }
+
+    private void initBean() {
+        try {
+            if (this.clazz.isAnnotation() || this.clazz.isInterface()) {
+                return;
+            }
+            this.bean = clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            log.error("Init Bean Failed.", e);
+        }
+    }
+}

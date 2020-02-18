@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--&lt;!&ndash; 加载属性文件 &ndash;&gt;-->
+    <!--<properties resource="config/db.properties">-->
+        <!--&lt;!&ndash;properties中还可以配置一些属性名和属性值 &ndash;&gt;-->
+        <!--&lt;!&ndash; <property name="jdbc.driver" value=""/> &ndash;&gt;-->
+    <!--</properties>-->
+    <properties resource="cgcg.properties"></properties>
+    <!-- 全局配置参数，需要时再设置 -->
+    <!-- <settings> </settings> -->
+
+    <!-- 和spring整合后 environments配置将废除 -->
+    <environments default="development">
+        <environment id="development">
+            <!-- 使用jdbc事务管理，事务控制由mybatis -->
+            <transactionManager type="JDBC"/>
+            <!-- 数据库连接池，由mybatis管理 -->
+            <dataSource type="org.cgcgframework.mybatis.HikariCPDataSourceFactory" >
+                <property name="jdbcUrl" value="${jdbcUrl}" />
+                <property name="username" value="${username}" />
+                <property name="password" value="${password}" />
+            </dataSource>
+<!--            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/point_test2?serverTimezone=Asia/Shanghai"/>
+                <property name="username" value="root"/>
+                <property name="password" value="a3873121"/>
+            </dataSource>-->
+        </environment>
+    </environments>
+
+    <!-- 加载 映射文件 -->
+    <mappers>
+        <package name="com.cgcgframework.test" />
+    </mappers>
+
+</configuration>
