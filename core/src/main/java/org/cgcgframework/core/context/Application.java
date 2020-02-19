@@ -50,21 +50,29 @@ public class Application {
     private static void initializationApplicationContext() {
         final Map<Class<?>, Object> context = ApplicationContext.getContext();
         final Set<Class<?>> classSet = context.keySet();
-        for (Class<?> aClass : classSet) {
+        // 获取全部注解Cinit的方法
+        final List<Initialization> initializations = new ArrayList<>();
+        classSet.forEach(aClass -> {
             final Method[] methods = aClass.getDeclaredMethods();
-            for (Method method : methods) {
+            Arrays.stream(methods).forEach(method -> {
                 final CInit cInit = method.getDeclaredAnnotation(CInit.class);
                 if (cInit != null) {
-                    try {
-                        method.invoke(context.get(aClass));
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
+                    initializations.add(new Initialization(context.get(aClass), method, cInit.order()));
                 }
+            });
+        });
+
+        // 根据获取初始化的方法上面的order进行排序
+        initializations.sort(Comparator.comparing(Initialization::getOrder));
+
+        //执行初始化方法
+        initializations.forEach(init -> {
+            try {
+                init.getMethod().invoke(init.getBean());
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                log.error(e.getMessage(), e);
             }
-        }
-
+        });
     }
-
 
 }

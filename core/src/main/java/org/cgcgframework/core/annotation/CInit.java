@@ -9,4 +9,6 @@ import java.lang.annotation.*;
 @Documented
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface CInit {
+
+    int order() default 0;
 }

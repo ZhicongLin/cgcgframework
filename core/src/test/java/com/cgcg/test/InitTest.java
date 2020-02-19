@@ -12,11 +12,12 @@ import org.cgcgframework.core.event.EventPublisher;
 public class InitTest {
 
     @CInit
+    @TestAopAnno
     public void handle() {
         final EventTest2 event = new EventTest2();
         event.setId(1L);
         EventPublisher.push(event);
-        final Integer execute = EventPublisher.execute(event, Integer.class);
+        final Long execute = EventPublisher.execute(event, Long.class);
         System.out.println("execute = " + execute);
     }
 
