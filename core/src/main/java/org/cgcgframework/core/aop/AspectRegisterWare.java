@@ -3,25 +3,17 @@ package org.cgcgframework.core.aop;
 import org.aspectj.lang.annotation.Aspect;
 import org.cgcgframework.core.CgcgScanBeanFactory;
 import org.cgcgframework.core.CgcgScanner;
-import org.cgcgframework.core.annotation.CBean;
-import org.cgcgframework.core.annotation.CInit;
+import org.cgcgframework.core.RegisterWare;
+import org.cgcgframework.core.annotation.Order;
 import org.cgcgframework.core.context.ApplicationContext;
 import org.cgcgframework.core.proxy.CgcgAopProxy;
 
 import java.lang.annotation.Annotation;
+@Order(Integer.MAX_VALUE)
+public class AspectRegisterWare implements RegisterWare {
 
-@CBean
-public class AspectRegisterWare {
-
-    @CInit(order = Integer.MIN_VALUE)
     public void register() {
         CgcgScanner.CLASS_HASH_SET.forEach(this::loadAspect);
-
-        AspectContext.replaceContext.forEach(clazz -> {
-            System.out.println("clazz ================================= " + clazz);
-            Object newBean = new CgcgAopProxy().newProxyInstance(clazz);
-            ApplicationContext.getContext().put(clazz, newBean);
-        });
     }
 
     private void loadAspect(Class<?> clazz) {

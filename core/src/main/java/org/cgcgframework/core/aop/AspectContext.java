@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Before;
-import org.cgcgframework.core.annotation.CBean;
 import org.cgcgframework.core.context.ApplicationContext;
 
 import java.lang.reflect.Method;
@@ -15,7 +14,6 @@ import java.util.Map;
 import java.util.Set;
 
 @Getter
-@CBean
 @Slf4j
 public class AspectContext {
 
