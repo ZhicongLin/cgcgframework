@@ -5,7 +5,7 @@ import net.sf.cglib.proxy.MethodProxy;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-public class AopInvokeProcessor {
+public class AspectInvokeProcessor {
 
 
     public static Object invokeSuper(Object o, Method method, Object[] objects, MethodProxy methodProxy,

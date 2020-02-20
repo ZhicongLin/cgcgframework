@@ -3,7 +3,7 @@ package org.cgcgframework.core;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.cgcgframework.core.proxy.BeanProxy;
+import org.cgcgframework.core.proxy.CgcgBeanProxy;
 
 @Slf4j
 @Setter
@@ -29,6 +29,6 @@ public class CgcgScanBeanFactory {
         if (this.clazz.isAnnotation() || this.clazz.isInterface()) {
             return;
         }
-        this.bean = new BeanProxy().getProxy(clazz); // clazz.newInstance();
+        this.bean = new CgcgBeanProxy().newProxyInstance(clazz); // clazz.newInstance();
     }
 }
