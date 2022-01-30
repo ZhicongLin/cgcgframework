@@ -1,12 +1,11 @@
 package com.cgcg.jdbc;
 
-import org.cgcgframework.core.annotation.CStarter;
-import org.cgcgframework.core.context.Application;
+import org.cgcgframework.core.annotation.Application;
 
-@CStarter
+@Application
 public class JdbcStart {
 
     public static void main(String[] args) throws Exception {
-        Application.run(JdbcStart.class, args);
+        org.cgcgframework.core.context.Application.run(JdbcStart.class, args);
     }
 }

@@ -1,12 +1,11 @@
 package com.cgcg.test;
 
-import org.cgcgframework.core.annotation.CStarter;
-import org.cgcgframework.core.context.Application;
+import org.cgcgframework.core.annotation.Application;
 
-@CStarter
+@Application
 public class CoreTestApp {
 
     public static void main(String[] args) throws Exception {
-        Application.run(CoreTestApp.class);
+        org.cgcgframework.core.context.Application.run(CoreTestApp.class);
     }
 }

@@ -1,11 +1,10 @@
 package com.cgcg.test;
 
-import org.cgcgframework.core.annotation.CStarter;
-import org.cgcgframework.core.context.Application;
+import org.cgcgframework.core.annotation.Application;
 
-@CStarter
+@Application
 public class WebTest {
     public static void main(String[] args) throws Exception {
-        Application.run(WebTest.class);
+        org.cgcgframework.core.context.Application.run(WebTest.class);
     }
 }

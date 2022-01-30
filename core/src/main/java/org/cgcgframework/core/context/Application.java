@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.cgcgframework.core.ApplicationRegister;
 import org.cgcgframework.core.annotation.CInit;
 import org.cgcgframework.core.annotation.CScan;
-import org.cgcgframework.core.annotation.CStarter;
 import org.cgcgframework.core.event.EventContext;
 
 import java.lang.annotation.Annotation;
@@ -37,7 +36,7 @@ public class Application {
     private static Set<String> getScanPackage(Class<?> clazz) {
         final Set<String> packages = new HashSet<>();
         packages.add(clazz.getPackage().getName());
-        final CStarter cStarter = clazz.getDeclaredAnnotation(CStarter.class);
+        final org.cgcgframework.core.annotation.Application cStarter = clazz.getDeclaredAnnotation(org.cgcgframework.core.annotation.Application.class);
         CScan cScan = clazz.getAnnotation(CScan.class);
         if (cScan == null) {
             final Class<? extends Annotation> annoType = cStarter.annotationType();

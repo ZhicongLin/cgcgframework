@@ -30,7 +30,12 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("utf-8");
-        response.setContentType("json/application; charset=utf-8");
+        String accept = request.getHeader("accept");
+        if (accept.contains("html")) {
+            response.setContentType("text/html; charset=utf-8");
+        } else {
+            response.setContentType("json/application; charset=utf-8");
+        }
         final String uri = request.getRequestURI().replaceFirst(request.getContextPath(), "");
         final Method method = CgcgServletContext.getMethod(uri, HttpMethod.valueOf(request.getMethod()));
         Logger logger;

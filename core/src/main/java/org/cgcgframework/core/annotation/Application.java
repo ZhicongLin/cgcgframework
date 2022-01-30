@@ -10,5 +10,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @CScan
 @CBean
-public @interface CStarter {
+public @interface Application {
 }
