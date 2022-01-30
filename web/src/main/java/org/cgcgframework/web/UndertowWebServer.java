@@ -12,31 +12,44 @@ import io.undertow.servlet.api.ServletInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.cgcgframework.core.annotation.CBean;
-import org.cgcgframework.core.annotation.CValue;
-import org.cgcgframework.core.context.ApplicationProperties;
-import org.cgcgframework.core.context.ApplicationPropertiesWare;
 import org.cgcgframework.core.context.Application;
 import org.cgcgframework.core.context.ApplicationInitializationWare;
+import org.cgcgframework.core.context.ApplicationProperties;
+import org.cgcgframework.core.context.ApplicationPropertiesWare;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
 
+/**
+ * Undertow服务器加载器
+ *
+ * @author zhicong.lin
+ */
 @Slf4j
 @CBean
-public class UndertowService implements ApplicationInitializationWare, ApplicationPropertiesWare {
+public class UndertowWebServer implements ApplicationInitializationWare, ApplicationPropertiesWare {
 
-    @CValue("cgcg.port")
-    private Integer port;
-    @CValue("cgcg.host")
-    private String host;
-    @CValue("cgcg.context-path")
-    private String contextPath;
-    @CValue("cgcg.application.name")
-    private String name;
+    private Integer port = 8080;
+    private String host = "127.0.0.1";
+    private String contextPath = "/";
+    private String name = "webTest";
 
     @Override
     public void load(Class<?> clazz, ApplicationProperties applicationProperties) {
         load(clazz, applicationProperties, "cgcg.properties");
+        initProperties(applicationProperties);
+        try {
+            start(clazz);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initProperties(ApplicationProperties applicationProperties) {
+        port = applicationProperties.getInteger("cgcg.port");
+        contextPath = applicationProperties.getProperty("cgcg.context-path");
+        host = applicationProperties.getProperty("cgcg.host");
+        name = applicationProperties.getProperty("cgcg.application.name");
     }
 
     private void start(Class<?> clazz) throws IOException {
@@ -55,9 +68,7 @@ public class UndertowService implements ApplicationInitializationWare, Applicati
         if (StringUtils.isBlank(contextPath)) {
             path = "/";
         }
-        /**
-         * 创建包部署对象，包含多个servletInfo。可以认为是servletInfo的集合
-         */
+        // 创建包部署对象，包含多个servletInfo。可以认为是servletInfo的集合
         DeploymentInfo deploymentInfo = Servlets.deployment();
         // 指定ClassLoader
         deploymentInfo.setClassLoader(clazz.getClassLoader());
@@ -67,23 +78,23 @@ public class UndertowService implements ApplicationInitializationWare, Applicati
         deploymentInfo.setDeploymentName(name);
         // 添加servletInfo到部署对象中
         deploymentInfo.addServlets(servletInfo);
-        /**
+        /*
          * 使用默认的servlet容器，并将部署添加至容器
          * 容器，用来管理DeploymentInfo，一个容器可以添加多个DeploymentInfo
          */
         ServletContainer container = Servlets.defaultContainer();
-        /**
+        /*
          * 将部署添加至容器并生成对应的容器管理对象
          * 包部署管理。是对添加到ServletContaint中DeploymentInfo的一个引用，用于运行发布和启动容器
          */
         DeploymentManager manager = container.addDeployment(deploymentInfo);
         // 实施部署
         manager.deploy();
-        /**
+        /*
          * 分发器：将用户请求分发给对应的HttpHandler
          */
         PathHandler pathHandler = Handlers.path();
-        /**
+        /*
          * servlet path处理器，DeploymentManager启动后返回的Servlet处理器。
          */
         HttpHandler myApp = null;
@@ -106,10 +117,11 @@ public class UndertowService implements ApplicationInitializationWare, Applicati
         //启动server
         server.start();
 
-        Application.serverTime =  System.currentTimeMillis() - start;
+        Application.serverTime = System.currentTimeMillis() - start;
         log.info("Undertow started on port(s): {} (http) with context path '{}'.", port, path);
     }
 
+    @Override
     public void initialization(Class<?> clazz) {
         try {
             this.start(clazz);

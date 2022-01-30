@@ -5,6 +5,9 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.cgcgframework.core.proxy.BeanProxy;
 
+/**
+ * @author zhicong.lin
+ */
 @Slf4j
 @Setter
 @Getter
@@ -29,6 +32,6 @@ public class CgcgScanBeanFactory {
         if (this.clazz.isAnnotation() || this.clazz.isInterface()) {
             return;
         }
-        this.bean = new BeanProxy().getProxy(clazz); // clazz.newInstance();
+        this.bean = new BeanProxy().getProxy(clazz);
     }
 }

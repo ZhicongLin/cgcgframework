@@ -23,7 +23,7 @@ public class HttpServletRequestReader {
     public static String readAsChars(HttpServletRequest request) {
 
         BufferedReader br = null;
-        StringBuilder sb = new StringBuilder("");
+        StringBuilder sb = new StringBuilder();
         try {
             br = request.getReader();
             String str;
@@ -46,7 +46,7 @@ public class HttpServletRequestReader {
     }
 
     // 方法二
-    public static void ReadAsChars2(HttpServletRequest request) {
+    public static void readAsChars2(HttpServletRequest request) {
         InputStream is = null;
         try {
             is = request.getInputStream();

@@ -16,9 +16,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
 
+/**
+ * @author zhicong.lin
+ */
 @CBean
 public class MybatisRegister implements RegisterWare {
-    private static SqlSessionFactory sqlSessionFactory;
+    private static final SqlSessionFactory SQL_SESSION_FACTORY;
 
     static {
         InputStream inputStream = null;
@@ -27,10 +30,11 @@ public class MybatisRegister implements RegisterWare {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        SQL_SESSION_FACTORY = new SqlSessionFactoryBuilder().build(inputStream);
     }
+    @Override
     public void register(CgcgScanner scanner) {
-        for (String pkg : ApplicationRegister.getPkgs()) {
+        for (String pkg : ApplicationRegister.getPgs()) {
             final Set<Class<?>> contexts = scanner.scan(pkg);
             for (Class<?> context : contexts) {
                 final Mapper mapper = context.getAnnotation(Mapper.class);
@@ -41,8 +45,8 @@ public class MybatisRegister implements RegisterWare {
         }
     }
 
-    private  void  initBean(Class clazz) {
-        final SqlSession sqlSession = sqlSessionFactory.openSession(true);
+    private  void  initBean(Class<?> clazz) {
+        final SqlSession sqlSession = SQL_SESSION_FACTORY.openSession(true);
         final Object bean = sqlSession.getMapper(clazz);
         final CgcgScanBeanFactory beanFactory = new CgcgScanBeanFactory();
         beanFactory.setClazz(clazz);

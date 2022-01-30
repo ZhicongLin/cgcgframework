@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author zhicong.lin
+ */
 public class CgcgScanner {
     public static final Set<Class<?>> CLASS_HASH_SET = new HashSet<>();
     public static final Set<String> PACKAGES = new HashSet<>();

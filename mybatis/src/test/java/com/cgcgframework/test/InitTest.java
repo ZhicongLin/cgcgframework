@@ -7,6 +7,7 @@ import org.cgcgframework.core.context.ApplicationInitializationWare;
 public class InitTest implements ApplicationInitializationWare {
     private Test test;
 
+    @Override
     public void initialization() {
         test.init();
     }

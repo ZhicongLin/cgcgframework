@@ -6,11 +6,17 @@ import org.cgcgframework.core.thread.ThreadPoolManager;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+/**
+ * 事件发送器
+ *
+ * @author zhicong.lin
+ */
 @Slf4j
 public class EventPublisher {
 
     /**
      * 执行事件 （获取事件执行返回值（不支持异步））
+     *
      * @return
      */
     public static <T> T execute(Object event, Class<T> returnType) {
@@ -22,7 +28,9 @@ public class EventPublisher {
                     final Object invoke = method.invoke(bean, event);
                     final Class<?> invokeClass = invoke.getClass();
                     if (invokeClass.isAssignableFrom(returnType)) {
-                        return (T) invoke;
+                        @SuppressWarnings("unchecked")
+                        T t = (T) invoke;
+                        return t;
                     } else {
                         throw new CastResultTypeException(invokeClass, returnType);
                     }

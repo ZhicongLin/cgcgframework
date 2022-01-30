@@ -1,7 +1,7 @@
 package com.cgcg.test;
 
 import org.cgcgframework.web.HttpMethod;
-import org.cgcgframework.web.annotation.CApi;
+import org.cgcgframework.web.annotation.Controller;
 import org.cgcgframework.web.annotation.mapping.GET;
 import org.cgcgframework.web.annotation.mapping.Mapping;
 import org.cgcgframework.web.annotation.mapping.POST;
@@ -14,7 +14,7 @@ import org.cgcgframework.web.parameter.ParamType;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-@CApi
+@Controller
 public class TestApi {
 
     @GET("/test")

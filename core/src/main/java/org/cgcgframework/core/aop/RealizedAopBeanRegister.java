@@ -16,6 +16,7 @@ import java.util.Map;
 /**
  * 描述:
  * aop实现核心处理类
+ * @author zhicong.lin
  */
 @CBean
 public class RealizedAopBeanRegister {

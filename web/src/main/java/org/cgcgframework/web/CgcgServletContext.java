@@ -6,23 +6,29 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Servlet上下文
+ *
+ * @author : zhicong.lin
+ * @date : 2022/1/30 19:16
+ */
 @Slf4j
 public class CgcgServletContext {
 
-    private static final Map<String, Method> servletContext = new HashMap<>();
-    private static final Map<Method, Object> beanContext = new HashMap<>();
+    private static final Map<String, Method> SERVLET_CONTEXT = new HashMap<>();
+    private static final Map<Method, Object> BEAN_CONTEXT = new HashMap<>();
 
     public static void put(String uri, Method method, HttpMethod httpMethod, Object bean) {
-        servletContext.put(httpMethod.name() + "::" + uri, method);
-        beanContext.put(method, bean);
-        log.info("Mapped URL path [{}] onto method [{}]", uri, method);
+        SERVLET_CONTEXT.put(httpMethod.name() + "::" + uri, method);
+        BEAN_CONTEXT.put(method, bean);
+        log.info("Mapped {}\t[{}] onto method [{}]", httpMethod.name(), uri, method);
     }
 
     public static Method getMethod(String uri, HttpMethod httpMethod) {
-        return servletContext.get(httpMethod.name() + "::" + uri);
+        return SERVLET_CONTEXT.get(httpMethod.name() + "::" + uri);
     }
 
     public static Object getBean(Method method) {
-        return beanContext.get(method);
+        return BEAN_CONTEXT.get(method);
     }
 }

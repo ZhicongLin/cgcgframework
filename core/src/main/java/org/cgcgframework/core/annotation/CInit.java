@@ -4,6 +4,7 @@ import java.lang.annotation.*;
 
 /**
  * 容器初始化时，执行的注解
+ * @author zhicong.lin
  */
 @Target(value = ElementType.METHOD)
 @Documented

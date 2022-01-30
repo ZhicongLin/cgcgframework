@@ -16,8 +16,16 @@ import java.util.Set;
 public class JdbcRegister implements RegisterWare {
 
 
+    /**
+     * 注册方法
+     * @param scanner
+     * @return void
+     * @author : zhicong.lin
+     * @date : 2022/1/30 15:51
+     */
+    @Override
     public void register(CgcgScanner scanner) {
-        for (String pkg : ApplicationRegister.getPkgs()) {
+        for (String pkg : ApplicationRegister.getPgs()) {
             final Set<Class<?>> contexts = scanner.scan(pkg);
             for (Class<?> context : contexts) {
                 final Jdbc jdbc = context.getAnnotation(Jdbc.class);
@@ -34,7 +42,7 @@ public class JdbcRegister implements RegisterWare {
         beanFactory.setPkg(clazz.getPackage().getName());
         final JdbcFactoryBean factoryBean = new JdbcFactoryBean();
         factoryBean.setObjectType(clazz);
-        beanFactory.setBean( factoryBean.getObject());
+        beanFactory.setBean(factoryBean.getObject());
         ApplicationContext.putBean(beanFactory);
         final Object bean = beanFactory.getBean();
         if (bean != null) {

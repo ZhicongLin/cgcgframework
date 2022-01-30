@@ -17,7 +17,7 @@ public class Application {
     private static final long currentTime = System.currentTimeMillis();
     public static long serverTime = 0;
 
-    public static void run(Class<?> clazz) {
+    public static void run(Class<?> clazz, String... args) {
         //获取扫描包
         final Set<String> packages = getScanPackage(clazz);
         //注册javaBean

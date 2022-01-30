@@ -12,11 +12,13 @@ import java.util.Map;
 
 /**
  * javaBean 代理类
+ *
+ * @author zhicong.lin
  */
 public class BeanProxy implements MethodInterceptor {
-    private Enhancer enhancer = new Enhancer();
+    private final Enhancer enhancer = new Enhancer();
 
-    public Object getProxy(Class clazz) {
+    public Object getProxy(Class<?> clazz) {
         enhancer.setSuperclass(clazz);
         enhancer.setCallback(this);
         return enhancer.create();

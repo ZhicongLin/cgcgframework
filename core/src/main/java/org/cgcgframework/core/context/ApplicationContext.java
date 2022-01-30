@@ -36,7 +36,7 @@ public class ApplicationContext {
         final Object bean = beanFactory.getBean();
         context.put(clazz, bean);
         if (bean instanceof ApplicationInitializationWare) {
-            applicationInitializationWare.add((ApplicationInitializationWare)bean);
+            applicationInitializationWare.add((ApplicationInitializationWare) bean);
         } else if (bean instanceof RegisterWare) {
             final RegisterHandle handle = new RegisterHandle();
             handle.setRegister((RegisterWare) bean);
@@ -71,7 +71,22 @@ public class ApplicationContext {
         //获取容器中全部已实例化的对象
         final Collection<Object> values = context.values();
 
-        for (Object bean : values) {
+        context.forEach((clazz, bean) -> {
+            //实例化的对象全部属性
+            final Field[] fields = clazz.getDeclaredFields();
+            for (Field field : fields) {
+                final Resource resource = field.getAnnotation(Resource.class);
+                if (resource == null) {
+                    //其他的方式注入
+                    otherInject(bean, field);
+                } else {
+                    //注解了resource
+                    resourceInject(bean, field);
+                }
+            }
+        });
+
+        /*for (Object bean : values) {
             //实例化的对象全部属性
             final Field[] fields = bean.getClass().getDeclaredFields();
             for (Field field : fields) {
@@ -84,7 +99,7 @@ public class ApplicationContext {
                     resourceInject(bean, field);
                 }
             }
-        }
+        }*/
 
     }
 
@@ -103,7 +118,7 @@ public class ApplicationContext {
     }
 
     private static void otherInject(Object bean, Field field) {
-        final CValue cValue = field.getAnnotation(CValue.class);
+        final CValue cValue = field.getDeclaredAnnotation(CValue.class);
         if (cValue == null) {
             return;
         }

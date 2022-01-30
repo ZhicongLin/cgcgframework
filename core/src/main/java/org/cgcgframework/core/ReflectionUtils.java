@@ -9,9 +9,10 @@ import java.lang.reflect.*;
  * 反射工具类.
  * <p>
  * 提供访问私有变量,获取泛型类型Class, 提取集合中元素的属性, 转换字符串到对象等Util函数.
+ * @author zhicong.lin
  */
 @Slf4j
-public class ReflectionUtils {
+public final class ReflectionUtils {
 
     /**
      * 调用Getter方法.
@@ -86,7 +87,7 @@ public class ReflectionUtils {
                 Field field = superClass.getDeclaredField(fieldName);
                 field.setAccessible(true);
                 return field;
-            } catch (NoSuchFieldException e) {//NOSONAR
+            } catch (NoSuchFieldException e) {
                 // Field不在当前类定义,继续向上转型
             }
         }
@@ -129,7 +130,7 @@ public class ReflectionUtils {
 
                 return method;
 
-            } catch (NoSuchMethodException e) {//NOSONAR
+            } catch (NoSuchMethodException e) {
                 // Method不在当前类定义,继续向上转型
             }
         }
@@ -150,7 +151,7 @@ public class ReflectionUtils {
                 method.setAccessible(true);
                 return method;
 
-            } catch (NoSuchMethodException e) {//NOSONAR
+            } catch (NoSuchMethodException e) {
                 // Method不在当前类定义,继续向上转型
             }
         }
@@ -167,8 +168,8 @@ public class ReflectionUtils {
      * @return the first generic declaration, or Object.class if cannot be determined
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public static <T> Class<T> getSuperClassGenricType(final Class clazz) {
-        return getSuperClassGenricType(clazz, 0);
+    public static <T> Class<T> getSuperClassGenericType(final Class clazz) {
+        return getSuperClassGenericType(clazz, 0);
     }
 
     /**
@@ -182,7 +183,7 @@ public class ReflectionUtils {
      * @return the index generic declaration, or Object.class if cannot be determined
      */
     @SuppressWarnings("rawtypes")
-    public static Class getSuperClassGenricType(final Class clazz, final int index) {
+    public static Class getSuperClassGenericType(final Class clazz, final int index) {
 
         Type genType = clazz.getGenericSuperclass();
 

@@ -5,6 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.UUID;
 
+/**
+ * 任务
+ *
+ * @author : zhicong.lin
+ * @date : 2022/1/30 19:18
+ */
 @Slf4j
 @Getter
 public abstract class ExecutorTask implements Runnable {
@@ -12,11 +18,13 @@ public abstract class ExecutorTask implements Runnable {
     private boolean cancel = false;
     private boolean finish = false;
     private Thread currentThread;
-    private String id;
+    private final String id;
+
     public ExecutorTask() {
         id = UUID.randomUUID().toString();
         log.info("创建任务[{}]", id);
     }
+
     /**
      * When an object implementing interface <code>Runnable</code> is used
      * to create a thread, starting the thread causes the object's

@@ -10,18 +10,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author zhicong.lin
+ */
 @Slf4j
 public class ApplicationRegister {
 
-    private static CgcgScanner cgcgScanner = new CgcgScanner();
-    private static Set<String> pkgs = new HashSet<>();
+    private static final CgcgScanner CGCG_SCANNER = new CgcgScanner();
+    private static Set<String> pgs = new HashSet<>();
 
-    public static synchronized void register(Set<String> pkgs, Class<?> clazz) {
-        ApplicationRegister.pkgs = pkgs;
+    public static synchronized void register(Set<String> pgs, Class<?> clazz) {
+        ApplicationRegister.pgs = pgs;
         ApplicationRegister.initProperties(clazz.getClassLoader());
         //加载注册器
-        for (String pkg : pkgs) {
-            final Set<Class<?>> contexts = cgcgScanner.scan(pkg);
+        for (String pkg : pgs) {
+            final Set<Class<?>> contexts = CGCG_SCANNER.scan(pkg);
             for (Class<?> context : contexts) {
                 ApplicationRegister.loadRegister(context);
             }
@@ -30,7 +33,7 @@ public class ApplicationRegister {
         final List<ApplicationContext.RegisterHandle> registers = ApplicationContext.getRegisters();
         registers.sort((o1, o2) -> o1.getOrder() > o2.getOrder() ? 1 : 0);
         for (ApplicationContext.RegisterHandle register : registers) {
-            register.getRegister().register();
+            register.getRegister().register(CGCG_SCANNER);
         }
 
         //注入依赖的Bean
@@ -70,7 +73,7 @@ public class ApplicationRegister {
         }
     }
 
-    public static Set<String> getPkgs() {
-        return pkgs;
+    public static Set<String> getPgs() {
+        return pgs;
     }
 }

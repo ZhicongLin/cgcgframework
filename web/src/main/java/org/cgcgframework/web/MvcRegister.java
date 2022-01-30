@@ -8,7 +8,7 @@ import org.cgcgframework.core.CgcgScanner;
 import org.cgcgframework.core.RegisterWare;
 import org.cgcgframework.core.annotation.CBean;
 import org.cgcgframework.core.context.ApplicationContext;
-import org.cgcgframework.web.annotation.CApi;
+import org.cgcgframework.web.annotation.Controller;
 import org.cgcgframework.web.annotation.mapping.Mapping;
 
 import java.lang.annotation.Annotation;
@@ -19,12 +19,12 @@ import java.util.Set;
 @CBean
 public class MvcRegister implements RegisterWare {
 
-
+    @Override
     public void register(CgcgScanner scanner) {
-        for (String pkg : ApplicationRegister.getPkgs()) {
+        for (String pkg : ApplicationRegister.getPgs()) {
             final Set<Class<?>> contexts = scanner.scan(pkg);
             for (Class<?> context : contexts) {
-                final CApi cApi = context.getAnnotation(CApi.class);
+                final Controller cApi = context.getAnnotation(Controller.class);
                 if (cApi != null) {
                     initBean(context);
                 }
@@ -32,7 +32,7 @@ public class MvcRegister implements RegisterWare {
         }
     }
 
-    private void initBean(Class clazz) {
+    private void initBean(Class<?> clazz) {
         final CgcgScanBeanFactory beanFactory = new CgcgScanBeanFactory(clazz);
         ApplicationContext.putBean(beanFactory);
         final Object bean = beanFactory.getBean();
@@ -59,18 +59,17 @@ public class MvcRegister implements RegisterWare {
                 final Mapping mapping = type.getAnnotation(Mapping.class);
                 if (mapping != null) {
                     final Method[] methods = annotation.getClass().getMethods();
-                    for (Method mtd : methods)
-                        if (mtd.getName().equals("value")) {
+                    for (Method mtd : methods) {
+                        if ("value".equals(mtd.getName())) {
                             final Object invoke;
                             try {
                                 invoke = mtd.invoke(annotation);
                                 return new MappingHandle(invoke.toString(), mapping);
-                            } catch (InvocationTargetException e) {
-                                e.printStackTrace();
-                            } catch (IllegalAccessException e) {
+                            } catch (InvocationTargetException | IllegalAccessException e) {
                                 e.printStackTrace();
                             }
                         }
+                    }
                 }
             } else {
                 final Mapping mapping = (Mapping) annotation;
@@ -82,7 +81,7 @@ public class MvcRegister implements RegisterWare {
 
     @AllArgsConstructor
     @Getter
-    private class MappingHandle {
+    private static class MappingHandle {
         String key;
         Mapping mapping;
     }

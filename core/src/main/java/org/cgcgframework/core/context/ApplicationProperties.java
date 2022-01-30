@@ -6,6 +6,10 @@ import org.cgcgframework.core.annotation.CBean;
 
 import java.util.Properties;
 
+/**
+ * 系统配置文件
+ * @author zhicong.lin
+ */
 @Setter
 @Getter
 @CBean
@@ -25,6 +29,7 @@ public class ApplicationProperties {
         return properties.getProperty(key);
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T get(String key, Class<T> tClass) {
         final boolean hasKey = properties.containsKey(key);
         if (Integer.class.equals(tClass)) {
